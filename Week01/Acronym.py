@@ -1,4 +1,5 @@
 from typing import List
+from typing import Optional, Callable, Any, Tuple
 
 
 # Definition for singly-linked list.
@@ -59,6 +60,66 @@ class Solution:
         head.next = None
         return pre
 
+    # 山脉数组
+    def validMountainArray(self, maxHeights: List[int]) -> int:
+        n = len(maxHeights)
+        if n < 3:
+            return False
+        l, r = 0, n - 1
+        while l < n - 1 and maxHeights[l] <= maxHeights[l + 1]:
+            l += 1
+        while r > 0 and maxHeights[r] <= maxHeights[r - 1]:
+            r -= 1
+        if l == r and l != 0 and r != n - 1:
+            return True
+        return False
+
+    # 美丽塔I
+    def maximumSumOfHeights(self, maxHeights):
+        res,n=0,len(maxHeights)
+        for i in range(n):
+            cur=tmp=maxHeights[i]
+
+            for j in range(i-1,-1,-1):
+                if maxHeights[j]<cur:
+                    cur=maxHeights[j]
+                tmp+=cur
+            cur=maxHeights[i]
+            for j in range(i+1,n):
+                if maxHeights[j]<cur:
+                    cur=maxHeights[j]
+                tmp+=cur
+            res=max(res,tmp)
+        return res
+
+    # nextGreaterElement下一个最大元素
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        stack=[]
+        res=[]
+        mapping={}
+        for num in nums2:
+            while stack and num>stack[-1]:
+                mapping[stack[-1]]=num
+                stack.pop()
+            stack.append(num)    
+        for num in nums1:
+            if num in mapping:
+                res.append(mapping[num])
+            else:
+                res.append(-1)
+        return res
+
+    # 每日温度
+    def dailyTemperatures(self, temperatures: List[int]) -> List[int]:
+        stack=[]
+        n=len(temperatures)
+        res=[0]*n
+        for i in range(n):
+            while stack and temperatures[i]>temperatures[stack[-1]]:
+                idx=stack.pop()
+                res[idx]=i-idx
+            stack.append(i)
+        return res
 
 # 最小栈
 class MinStack:
@@ -84,4 +145,6 @@ class MinStack:
 
 if __name__ == "__main__":
     s = Solution()
-    print(s.isAcronym(["alice", "bob", "charlie"], "abc"))
+    print(s.maximumSumOfHeights([6,5,3,9,2,7]))
+    xx=[i for i in range(0 - 1, -1, -1)]
+    print(''.join(xx))
